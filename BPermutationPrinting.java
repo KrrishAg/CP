@@ -1,31 +1,30 @@
 
+import java.io.IOException;
 import java.io.*;
 import java.lang.*;
 import java.util.*;
 
-public class BMashmokhAndAcm {
+public class BPermutationPrinting {
     
     static FastScanner sc = new FastScanner();
     static long MOD = 100_000_0007;
     
     public static void main(String[] args) throws IOException {
-        int n = sc.nextInt();           
-        int k = sc.nextInt();           
-        long finalCnt[][] = new long[n+1][k+1];
-        for(int i = 1; i<=n; i++) finalCnt[i][1] = 1;
-        for(int i = 2; i<=k; i++) {
-            for(int j = 1; j<=n; j++) {
-                for(int p = j; p<=n; p+=j) {
-                    finalCnt[p][i] = (finalCnt[p][i] + finalCnt[j][i-1])%MOD; 
-                }
-            }
+        int t = sc.nextInt();
+        while(t-->0) {
+            solve();
         }
-        long res = 0;
-        for(int i = 1; i<=n; i++) {
-            res = (res + finalCnt[i][k])%MOD;
+    }
+
+    static void solve() throws IOException {
+        int n = sc.nextInt();
+        int l =1, r = n;
+        while(l<=r) {
+            System.out.print(l+" ");
+            if(l!=r) System.out.print(r+" ");
+            l++;r--;
         }
-        // System.out.println(Arrays.toString(finalCnt));
-        System.out.println(res);
+        System.out.println();
     }
 
 

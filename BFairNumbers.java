@@ -1,30 +1,42 @@
 
+import java.io.IOException;
 import java.io.*;
 import java.lang.*;
 import java.util.*;
 
-public class BMashmokhAndAcm {
+public class BFairNumbers {
     
     static FastScanner sc = new FastScanner();
     static long MOD = 100_000_0007;
     
     public static void main(String[] args) throws IOException {
-        int n = sc.nextInt();           
-        int k = sc.nextInt();           
-        long finalCnt[][] = new long[n+1][k+1];
-        for(int i = 1; i<=n; i++) finalCnt[i][1] = 1;
-        for(int i = 2; i<=k; i++) {
-            for(int j = 1; j<=n; j++) {
-                for(int p = j; p<=n; p+=j) {
-                    finalCnt[p][i] = (finalCnt[p][i] + finalCnt[j][i-1])%MOD; 
+        int t = sc.nextInt();
+        while(t-->0) {
+            solve();
+        }
+    }
+
+    static void solve() throws IOException {
+        long n = sc.nextLong();
+        long l = n, r = (long)1e18;
+        long res = r;
+        while(true) {
+            long num =n;
+            boolean ok = true;
+            while(num>0 && ok) {
+                int d = (int)(num%10);
+                if(d>0 && n%d!=0) {
+                    ok = false;
+                    break;
                 }
+                num/=10;
             }
+            if(ok) {
+                res = n;
+                break;
+            }
+            n++;
         }
-        long res = 0;
-        for(int i = 1; i<=n; i++) {
-            res = (res + finalCnt[i][k])%MOD;
-        }
-        // System.out.println(Arrays.toString(finalCnt));
         System.out.println(res);
     }
 
