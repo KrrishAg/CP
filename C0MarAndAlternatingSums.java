@@ -4,7 +4,7 @@ import java.io.*;
 import java.lang.*;
 import java.util.*;
 
-public class DDecidophobia {
+public class C0MarAndAlternatingSums {
     
     static FastScanner sc = new FastScanner();
     static long MOD = 100_000_0007;
@@ -18,22 +18,48 @@ public class DDecidophobia {
 
     static void solve() throws IOException {
         int n = sc.nextInt();
-        int d = sc.nextInt();
-        long[] arr = new long[3*n];
-        for(int i = 0; i<n; i++) {
-            long x = sc.nextLong();
-            arr[i] = arr[i+n] = arr[i+n+n] = x;
+        long[] arr = new long[n];
+        input(arr);
+        long m1 = 0;
+        HashMap<Long,Long> hm = new HashMap<>();
+        for(long x:arr) {
+            if(x==-1) m1++;
+            hm.put(x,hm.getOrDefault(x,0L)+1);
         }
-        for(int i = 1; i<arr.length; i++) {
-            arr[i] += arr[i-1];
+        long res = 1;
+        for(long val:hm.values()) {
+            res = (res * pow(2,val-1,MOD)) % MOD;
         }
-        long res = 0;
-        for(int i = n; i<2*n; i++) {
-            long curr = 2*d*(arr[i]-arr[i-1]) - (arr[i+d]-arr[i]) - (arr[i-1]-arr[i-d-1]);
-            if(curr>0) res += curr;
+        // System.out.println(res);
+        if(m1==0) {
+            System.out.println(res);
+            return;
         }
+
+        long tmp = res;
+        res = (res - 1 + MOD)%MOD;
+        // res = (res*2)%MOD;
+        for(int i = 1; i<n; i++) {
+            if(arr[i]-arr[i-1]==1) res = (res + tmp)%MOD;
+        }
+        res = (res+1)%MOD;
         System.out.println(res);
 
+        //add 1 to res
+    }
+
+    static long pow(long base, long power, long m) {
+       long res = 1;
+       base %= m;
+    
+       while (power > 0) {
+           if ((power & 1) == 1)
+           res = (res * base) % m;
+           base = (base * base) % m;
+           power >>= 1;
+       }
+    
+       return res;
     }
 
 

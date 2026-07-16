@@ -1,10 +1,9 @@
 
-import java.io.IOException;
 import java.io.*;
 import java.lang.*;
 import java.util.*;
 
-public class DDecidophobia {
+public class EMashaAndTheGarland {
     
     static FastScanner sc = new FastScanner();
     static long MOD = 100_000_0007;
@@ -18,22 +17,24 @@ public class DDecidophobia {
 
     static void solve() throws IOException {
         int n = sc.nextInt();
-        int d = sc.nextInt();
-        long[] arr = new long[3*n];
-        for(int i = 0; i<n; i++) {
-            long x = sc.nextLong();
-            arr[i] = arr[i+n] = arr[i+n+n] = x;
+        int q = sc.nextInt();
+        String s = sc.next();
+        int dp[] = new int[n];
+        for(int i = 1; i<n; i++) {
+            if(s.charAt(i)==s.charAt(i-1)) dp[i]++;
         }
-        for(int i = 1; i<arr.length; i++) {
-            arr[i] += arr[i-1];
-        }
-        long res = 0;
-        for(int i = n; i<2*n; i++) {
-            long curr = 2*d*(arr[i]-arr[i-1]) - (arr[i+d]-arr[i]) - (arr[i-1]-arr[i-d-1]);
-            if(curr>0) res += curr;
-        }
-        System.out.println(res);
+        for(int i = 1; i<n; i++) dp[i] += dp[i-1];
 
+
+        for(int i = 0; i<q; i++) {
+            int l = sc.nextInt()-1;
+            int r = sc.nextInt()-1;
+            int k = sc.nextInt();
+            int tmp = dp[r] - dp[l]; 
+
+            if((tmp+1)/2<=k) System.out.println("YES");
+            else System.out.println("NO");
+        } 
     }
 
 

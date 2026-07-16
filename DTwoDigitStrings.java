@@ -1,10 +1,9 @@
 
-import java.io.IOException;
 import java.io.*;
 import java.lang.*;
 import java.util.*;
 
-public class DDecidophobia {
+public class DTwoDigitStrings {
     
     static FastScanner sc = new FastScanner();
     static long MOD = 100_000_0007;
@@ -17,23 +16,41 @@ public class DDecidophobia {
     }
 
     static void solve() throws IOException {
-        int n = sc.nextInt();
-        int d = sc.nextInt();
-        long[] arr = new long[3*n];
+        String a = sc.next();    
+        String b = sc.next();    
+        int m = a.length(), n = b.length();
+        int prea[] = new int[m];
+        for(int i = 0; i<m; i++) {
+            int ch = a.charAt(i)-'0';
+            prea[i] = (i==0) ? ch : (prea[i-1]+ch)%10;
+        }
+        int preb[] = new int[n];
         for(int i = 0; i<n; i++) {
-            long x = sc.nextLong();
-            arr[i] = arr[i+n] = arr[i+n+n] = x;
+            int ch = b.charAt(i)-'0';
+            preb[i] = (i==0) ? ch : (preb[i-1]+ch)%10;
         }
-        for(int i = 1; i<arr.length; i++) {
-            arr[i] += arr[i-1];
-        }
-        long res = 0;
-        for(int i = n; i<2*n; i++) {
-            long curr = 2*d*(arr[i]-arr[i-1]) - (arr[i+d]-arr[i]) - (arr[i-1]-arr[i-d-1]);
-            if(curr>0) res += curr;
-        }
-        System.out.println(res);
+        // if(prea[m-1] != preb[n-1]) {
+        //     System.out.println(-1);
+        //     return;
+        // }
+        int dp[][] = new int[m][n];
+        for(int x[]: dp) Arrays.fill(x,-1);
+        fn(dp,m-1,n-1,prea,preb);
+        System.out.println(dp[m-1][n-1]);
+    }
+    static int fn(int dp[][], int i, int j, int prea[], int preb[]) {
+        if(i<0 || j<0) return 0;
+        if(dp[i][j] != -1) return dp[i][j];
 
+        if(prea[i]==preb[j]) {
+            int tmp = fn(dp,i-1,j-1,prea,preb);
+            dp[i][j] = tmp+1;
+        }
+        else {
+            int tmp = Math.max(fn(dp,i-1,j,prea,preb), fn(dp,i,j-1,prea,preb));
+            dp[i][j] = tmp;
+        }
+        return dp[i][j];
     }
 
 

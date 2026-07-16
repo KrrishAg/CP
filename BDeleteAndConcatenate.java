@@ -1,10 +1,9 @@
 
-import java.io.IOException;
 import java.io.*;
 import java.lang.*;
 import java.util.*;
 
-public class DDecidophobia {
+public class BDeleteAndConcatenate {
     
     static FastScanner sc = new FastScanner();
     static long MOD = 100_000_0007;
@@ -18,22 +17,29 @@ public class DDecidophobia {
 
     static void solve() throws IOException {
         int n = sc.nextInt();
-        int d = sc.nextInt();
-        long[] arr = new long[3*n];
+        long c = sc.nextLong();
+        long[] arr = new long[n];
+        ArrayList<Long> sm = new ArrayList<>();
+        ArrayList<Long> big = new ArrayList<>();
         for(int i = 0; i<n; i++) {
             long x = sc.nextLong();
-            arr[i] = arr[i+n] = arr[i+n+n] = x;
+            if(x<c) sm.add(x);
+            else big.add(x);
         }
-        for(int i = 1; i<arr.length; i++) {
-            arr[i] += arr[i-1];
+        if(sm.size()<=big.size()) {
+            long sum = 0;
+            for(long x:big) sum+=x;
+            System.out.println(sum - c*big.size());
         }
-        long res = 0;
-        for(int i = n; i<2*n; i++) {
-            long curr = 2*d*(arr[i]-arr[i-1]) - (arr[i+d]-arr[i]) - (arr[i-1]-arr[i-d-1]);
-            if(curr>0) res += curr;
+        else {
+            Collections.sort(sm, Collections.reverseOrder());
+            long sum = 0;
+            for(long x:big) sum+=x;
+            long extra = (sm.size()-big.size() + 1)/2;
+            long cnt = big.size() + extra; 
+            for(int i = 0; i<extra; i++) sum += sm.get(i);
+            System.out.println(sum - c*cnt);
         }
-        System.out.println(res);
-
     }
 
 

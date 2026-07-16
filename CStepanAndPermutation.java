@@ -1,10 +1,9 @@
 
-import java.io.IOException;
 import java.io.*;
 import java.lang.*;
 import java.util.*;
 
-public class DDecidophobia {
+public class CStepanAndPermutation {
     
     static FastScanner sc = new FastScanner();
     static long MOD = 100_000_0007;
@@ -18,22 +17,54 @@ public class DDecidophobia {
 
     static void solve() throws IOException {
         int n = sc.nextInt();
-        int d = sc.nextInt();
-        long[] arr = new long[3*n];
-        for(int i = 0; i<n; i++) {
-            long x = sc.nextLong();
-            arr[i] = arr[i+n] = arr[i+n+n] = x;
-        }
-        for(int i = 1; i<arr.length; i++) {
-            arr[i] += arr[i-1];
-        }
-        long res = 0;
-        for(int i = n; i<2*n; i++) {
-            long curr = 2*d*(arr[i]-arr[i-1]) - (arr[i+d]-arr[i]) - (arr[i-1]-arr[i-d-1]);
-            if(curr>0) res += curr;
-        }
-        System.out.println(res);
+        int x = sc.nextInt();
+        int y = sc.nextInt();
+        int[] arr = new int[n];
+        input(arr);
 
+        DS ds = new DS(n+1);
+        for(int i = 1; i<=n; i++) {
+            if(i+x<=n) ds.union(i, i+x);
+            if(i+y<=n) ds.union(i, i+y);
+        }
+
+        for(int i = 1; i<=n; i++) {
+            if(ds.getUPar(i) != ds.getUPar(arr[i-1])) {
+                System.out.println("NO");
+                return;
+            }
+        }
+        System.out.println("YES");
+    }
+
+    static class DS {
+        int par[], size[];
+        DS(int n) {
+            par = new int[n];
+            size = new int[n];
+            for(int i = 0; i<n; i++) {
+                par[i] = i;
+                size[i] = 1;
+            }
+        }
+        int getUPar(int u) {
+            int p = par[u];
+            if(p==u) return p;
+            else return getUPar(p);
+        }
+        void union(int u, int v) {
+            int pu = getUPar(u), pv = getUPar(v);
+            if(pu==pv) return;
+            int su = size[pu], sv = size[pv];
+            if(su>=sv) {
+                par[pv] = pu;
+                size[pu] += sv;
+            }
+            else {
+                par[pu] = pv;
+                size[pv] += su;
+            }
+        }
     }
 
 

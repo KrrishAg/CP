@@ -1,16 +1,15 @@
 
-import java.io.IOException;
 import java.io.*;
 import java.lang.*;
 import java.util.*;
 
-public class DDecidophobia {
+public class CEhabAndPathEticMexs {
     
     static FastScanner sc = new FastScanner();
     static long MOD = 100_000_0007;
     
     public static void main(String[] args) throws IOException {
-        int t = sc.nextInt();
+        int t = 1;
         while(t-->0) {
             solve();
         }
@@ -18,22 +17,30 @@ public class DDecidophobia {
 
     static void solve() throws IOException {
         int n = sc.nextInt();
-        int d = sc.nextInt();
-        long[] arr = new long[3*n];
-        for(int i = 0; i<n; i++) {
-            long x = sc.nextLong();
-            arr[i] = arr[i+n] = arr[i+n+n] = x;
+        List<List<int[]>> al = new ArrayList<>();
+        for(int i = 0; i<n+1; i++) al.add(new ArrayList<>());
+        for(int i = 0; i<n-1; i++) {
+            int u = sc.nextInt();
+            int v = sc.nextInt();
+            al.get(u).add(new int[]{v,i});
+            al.get(v).add(new int[]{u,i});
         }
-        for(int i = 1; i<arr.length; i++) {
-            arr[i] += arr[i-1];
+        if(n==2) {
+            System.out.println(0);
+            return;
         }
-        long res = 0;
-        for(int i = n; i<2*n; i++) {
-            long curr = 2*d*(arr[i]-arr[i-1]) - (arr[i+d]-arr[i]) - (arr[i-1]-arr[i-d-1]);
-            if(curr>0) res += curr;
+        int res[] = new int[n-1], val = 0;
+        Arrays.fill(res,-1);
+        for(List<int[]> curr : al) {
+            if(curr.size() == 1) {
+                int idx = curr.get(0)[1];
+                res[idx] = val++;
+            } 
         }
-        System.out.println(res);
-
+        for(int i = 0; i<res.length; i++) {
+            if(res[i] == -1) res[i] = val++;
+        }
+        for(int x:res) System.out.println(x);
     }
 
 

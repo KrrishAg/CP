@@ -1,10 +1,9 @@
 
-import java.io.IOException;
 import java.io.*;
 import java.lang.*;
 import java.util.*;
 
-public class DDecidophobia {
+public class BEzraftAndArray {
     
     static FastScanner sc = new FastScanner();
     static long MOD = 100_000_0007;
@@ -18,22 +17,23 @@ public class DDecidophobia {
 
     static void solve() throws IOException {
         int n = sc.nextInt();
-        int d = sc.nextInt();
-        long[] arr = new long[3*n];
-        for(int i = 0; i<n; i++) {
-            long x = sc.nextLong();
-            arr[i] = arr[i+n] = arr[i+n+n] = x;
+        if(n==1) {
+            System.out.println(1);
         }
-        for(int i = 1; i<arr.length; i++) {
-            arr[i] += arr[i-1];
+        else if(n==2) {
+            System.out.println(-1);
         }
-        long res = 0;
-        for(int i = n; i<2*n; i++) {
-            long curr = 2*d*(arr[i]-arr[i-1]) - (arr[i+d]-arr[i]) - (arr[i-1]-arr[i-d-1]);
-            if(curr>0) res += curr;
+        else {
+            ArrayList<Long> al = new ArrayList<>();
+            al.add(1l);
+            al.add(2l);
+            al.add(3l);
+            for(int i = 3; i<n; i++) {
+                al.add(al.getLast()*2);
+            }
+            for(long x:al) System.out.print(x+" ");
+            System.out.println();
         }
-        System.out.println(res);
-
     }
 
 

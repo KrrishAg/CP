@@ -4,7 +4,7 @@ import java.io.*;
 import java.lang.*;
 import java.util.*;
 
-public class DDecidophobia {
+public class DYaroslavAndProductivity {
     
     static FastScanner sc = new FastScanner();
     static long MOD = 100_000_0007;
@@ -18,22 +18,29 @@ public class DDecidophobia {
 
     static void solve() throws IOException {
         int n = sc.nextInt();
-        int d = sc.nextInt();
-        long[] arr = new long[3*n];
-        for(int i = 0; i<n; i++) {
-            long x = sc.nextLong();
-            arr[i] = arr[i+n] = arr[i+n+n] = x;
-        }
-        for(int i = 1; i<arr.length; i++) {
-            arr[i] += arr[i-1];
-        }
-        long res = 0;
-        for(int i = n; i<2*n; i++) {
-            long curr = 2*d*(arr[i]-arr[i-1]) - (arr[i+d]-arr[i]) - (arr[i-1]-arr[i-d-1]);
-            if(curr>0) res += curr;
-        }
-        System.out.println(res);
+        int m = sc.nextInt();
+        long[] arr = new long[n];
+        input(arr);
+        int[] indexes = new int[m];
+        input(indexes);
+        Arrays.sort(indexes);
 
+        long ps[] = new long[n];
+        ps[0] = arr[0];
+        for(int i = 1; i<n; i++) ps[i] = ps[i-1] + arr[i];
+        long dp[][] = new long[m][2];
+        
+        //last
+        int idx = indexes[m-1]-1;
+        dp[m-1][0] = ps[n-1];
+        dp[m-1][1] = ps[n-1] - 2*ps[idx];
+        
+        for(int i = m-2; i>=0; i--) {
+            idx = indexes[i]-1;
+            dp[i][0] = Math.max(dp[i+1][0], dp[i+1][1] + 2*ps[idx]);                    
+            dp[i][1] = Math.max(dp[i+1][1], dp[i+1][0] - 2*ps[idx]);                    
+        }
+        System.out.println(Math.max(dp[0][0], dp[0][1]));
     }
 
 

@@ -1,10 +1,9 @@
 
-import java.io.IOException;
 import java.io.*;
 import java.lang.*;
 import java.util.*;
 
-public class DDecidophobia {
+public class CMexor {
     
     static FastScanner sc = new FastScanner();
     static long MOD = 100_000_0007;
@@ -18,22 +17,38 @@ public class DDecidophobia {
 
     static void solve() throws IOException {
         int n = sc.nextInt();
-        int d = sc.nextInt();
-        long[] arr = new long[3*n];
-        for(int i = 0; i<n; i++) {
-            long x = sc.nextLong();
-            arr[i] = arr[i+n] = arr[i+n+n] = x;
+        int k = sc.nextInt();
+        if(n==1 && k==0) {
+            System.out.println("NO");
+            return;
         }
-        for(int i = 1; i<arr.length; i++) {
-            arr[i] += arr[i-1];
-        }
-        long res = 0;
-        for(int i = n; i<2*n; i++) {
-            long curr = 2*d*(arr[i]-arr[i-1]) - (arr[i+d]-arr[i]) - (arr[i-1]-arr[i-d-1]);
-            if(curr>0) res += curr;
-        }
-        System.out.println(res);
 
+        long x = n^k;
+        ArrayList<Integer> al = new ArrayList<>();
+        HashSet<Integer> hs = new HashSet<>();
+        int curr = 1;
+        while(x>0) {
+            if((x&1)==1) {
+                al.add(curr);
+                hs.add(curr);
+                if(curr>=n) {
+                    System.out.println("NO");
+                    return;
+                }
+            }
+            curr = curr*2;
+            x>>=1;
+        }
+        Collections.sort(al);
+        System.out.println("YES");
+        for(int i = 1; i<n; i++) {
+            if(!hs.contains(i)) System.out.print(i+" ");
+        }
+        System.out.print(0+" ");
+        for(int num:al) {
+            System.out.print(num+" ");
+        } 
+        System.out.println();
     }
 
 
